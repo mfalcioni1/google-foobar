@@ -1,4 +1,4 @@
-import heapq
+# import heapq
 
 def solution(xs):
     '''
@@ -63,7 +63,7 @@ def solution(xs):
 # solution([1, 0, 1, -1])
 # 1
 # solution([-3, -4, 3, 4, 5])
-# 240
+# 720
 # solution([-3, -4, 3, 4, 5, 1])
 # 720
 # solution([2, 1, 2, 2, 1])
