@@ -23,6 +23,7 @@ def solution(xs):
     # that needs to be addressed
     # this gets complicated with the posibility of the
     # product of the greatest two negatives numbers < smallest positive number
+    # this wasn't necessary :(
     # if len(max_power) == len(xs):
     #     if len(negatives) > 0:
     #         positives = [num for num in xs if num > 0]
