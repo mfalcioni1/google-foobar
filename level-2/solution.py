@@ -17,25 +17,6 @@ def solution(xs):
     elif len(negatives) > 1 & (len(negatives) % 2) == 1:
         negatives.remove(max(negatives))
         max_power = max_power + negatives
-
-    # testing if we need to always have at least one panel off for maximum power calc
-    # even though A=B -> B is a subset of A, it is an improper subset so maybe
-    # that needs to be addressed
-    # this gets complicated with the posibility of the
-    # product of the greatest two negatives numbers < smallest positive number
-    # this wasn't necessary :(
-    # if len(max_power) == len(xs):
-    #     if len(negatives) > 0:
-    #         positives = [num for num in xs if num > 0]
-    #         if min(positives) > reduce(lambda y, z: y * z, heapq.nlargest(2, negatives)):
-    #             negatives = [rmv for rmv in negatives if rmv not in heapq.nlargest(2, negatives)]
-    #         else:
-    #             positives.remove(min(positives))
-    #         max_power = positives + negatives
-    #     else:
-    #         max_power.remove(min(max_power))
-
-    # 0 can be a max power. and max power can be negative
         
     if len(xs) == 1 and negatives == xs:
         output = str(negatives[0])
