@@ -1,3 +1,5 @@
+import random
+
 def solution(h, q):
     '''
     check if root
@@ -35,6 +37,7 @@ def solution(h, q):
 
 solution(3, [7, 3, 5, 1])
 solution(5, [30, 5, 2])
+solution(10, random.sample(range(1, 2**10-1), 1000))
 
 '''
    7
