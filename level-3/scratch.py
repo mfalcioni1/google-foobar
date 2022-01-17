@@ -1,3 +1,4 @@
+
 def solution(h, q):
     '''
     check if root
@@ -33,3 +34,5 @@ def solution(h, q):
                 loc = loc-2**(h-i)
                 i += 1
     return p
+
+    
