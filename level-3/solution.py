@@ -5,31 +5,36 @@ def solution(h, q):
         right is loc-1 left if loc-2^(h-i)
     else decide left or right
     repeat until through tree
-    to do it for array check whole array?
+    loop for each element of q (slow)
     '''
 
     e = 2**h - 1 #number of nodes in tree
 
+    # allocate solution array
+    p = [None for _ in range(len(q))]
+
     # if root, return -1 
-    if q == e:
-        p = -1
-    # go into search
-    else:
-        loc = e
-        i = 1
-        while i < h:
-            if q == loc-2**(h-i) | q == loc-1:
-                p = loc
-                i = h
-            elif q > loc-2**(h-i):
-                loc = loc-1
-                i += 1
-            else:
-                loc = loc-2**(h-i)
-                i += 1
+    for x in q:
+        if x == e:
+            p[q.index(x)] = -1
+        # go into search
+        else:
+            loc = e
+            i = 1
+            while i < h:
+                if x == loc-2**(h-i) or x == loc-1:
+                    p[q.index(x)] = loc
+                    i = h
+                elif x > loc-2**(h-i):
+                    loc = loc-1
+                    i += 1
+                else:
+                    loc = loc-2**(h-i)
+                    i += 1
     return p
 
-solution(3, 3)
+solution(3, [7, 3, 5, 1])
+solution(5, [30, 5, 2])
 
 '''
    7
