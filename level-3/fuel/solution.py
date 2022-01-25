@@ -10,16 +10,37 @@ def solution(n):
     it will always be better to get the number as small as possible
     via division until our "remainder" i.e. distance from 2^n == 1
     """
-    # solve the easy ones
+    # solve the easy one
     n = int(n)
     if n == 0:
         return 0
-    elif math.log(n, 2).is_integer():
-        return int(math.log(n, 2))
     else:
-        nearest = round(math.log(n, 2))
-        dist = abs(n - 2**nearest)
-        return int(dist + nearest)
-
+        i = 0 # tracking actions taken
+        while n != 1:
+            nearest = round(math.log(n, 2))
+            dist = n - 2**nearest
+            # if it is even divide by 2.
+            if abs(dist) == 1:
+                n = n - dist
+                i += 1
+            elif dist == 0:
+                return i + int(round(math.log(n, 2)))
+            else:
+                if n % 2 == 0:
+                    n = n // 2
+                    i += 1
+                else:
+                    n = n - 1
+                    i += 1
+        return i
 
 solution('15')
+# 5
+solution('17')
+# 5
+solution('20')
+# 5
+solution('4')
+# 2
+solution('131')
+# 9
