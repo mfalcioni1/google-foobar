@@ -50,10 +50,10 @@ solution(200)
 #    487067745
 
 # Input:
-# solution(3)
+solution(3)
 # Output:
 #    1
-# solution(7)
-# solution(8)
+solution(7)
+solution(8)
 solution(9)
 solution(10)
