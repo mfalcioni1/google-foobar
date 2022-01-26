@@ -20,17 +20,24 @@ def solution(n):
             nearest = round(math.log(n, 2))
             dist = n - 2**nearest
             # if it is even divide by 2.
-            if abs(dist) == 1:
-                n = n - dist
-                i += 1
+            if abs(dist) == 1: # there is something wrong here
+                if n == 3: # 3 breaks the rule for some reason
+                    n = n - 1
+                    i += 1
+                else:
+                    n = n - dist
+                    i += 1
+            # if remainder is 0 then found solution
             elif dist == 0:
                 return i + int(round(math.log(n, 2)))
+            # if even divide by 2
             else:
                 if n % 2 == 0:
                     n = n // 2
                     i += 1
+                # or add 1
                 else:
-                    n = n - 1
+                    n = n + 1
                     i += 1
         return i
 
@@ -44,3 +51,12 @@ solution('4')
 # 2
 solution('131')
 # 9
+stepCount(131)
+
+wrong = []
+for i in range(1000):
+    if stepCount(i) != solution(i):
+        wrong.append(i)
+
+solution(6)
+stepCount(6)
