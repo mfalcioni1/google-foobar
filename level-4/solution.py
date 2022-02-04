@@ -1,21 +1,5 @@
 import itertools as iter
 
-def choose(n, k):
-    """
-    A fast way to calculate binomial coefficients by Andrew Dalke (contrib).
-    Obtained from https://stackoverflow.com/a/3025547
-    """
-    if 0 <= k <= n:
-        ntok = 1
-        ktok = 1
-        for t in range(1, min(k, n - k) + 1):
-            ntok *= n
-            ktok *= t
-            n -= 1
-        return ntok // ktok
-    else:
-        return 0
-
 def solution(num_buns, num_required):
     """
     total keys = num_buns choose num_required-1
@@ -49,9 +33,7 @@ def solution(num_buns, num_required):
     so it follows C(n, k - 1) = C(n, n - (k - 1)) = C(n, n - k + 1) = C(n, j)
     """
 
-    # total_keys = choose(num_buns, num_required-1)
     dupe_keys = num_buns - num_required + 1
-    # keys_per_bun = (total_keys*dupe_keys)/num_buns
     sol = [[] for _ in range(num_buns)]
     
     # solve easy cases
