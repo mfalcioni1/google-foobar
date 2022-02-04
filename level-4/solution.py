@@ -46,13 +46,13 @@ def solution(num_buns, num_required):
     C(n, n-(k-1) = C(n, n - k + 1) = C(n, k - 1)
 
     yes, since we know C(n, k) = C(n, n-k)
-    so it follows C(n, k-1) = C(n, n - (k - 1)) = C(n, k)
+    so it follows C(n, k - 1) = C(n, n - (k - 1)) = C(n, n - k + 1) = C(n, j)
     """
 
-    total_keys = choose(num_buns, num_required-1)
+    # total_keys = choose(num_buns, num_required-1)
     dupe_keys = num_buns - num_required + 1
-    keys_per_bun = (total_keys*dupe_keys)/num_buns
-    sol = [[] for i in range(num_buns)]
+    # keys_per_bun = (total_keys*dupe_keys)/num_buns
+    sol = [[] for _ in range(num_buns)]
     
     # solve easy cases
     if num_buns == num_required:
@@ -66,8 +66,14 @@ def solution(num_buns, num_required):
     if num_required == 0:
         return sol
 
-
+    i = 0
+    for l in iter.combinations(range(num_buns), dupe_keys):
+        for j in l:
+            sol[j].append(i)
+        i += 1
+    return sol
 
 solution(5, 0)
 solution(4, 1)
 solution(4, 4)
+solution(5, 3)
