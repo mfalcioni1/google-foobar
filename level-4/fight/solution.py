@@ -12,13 +12,31 @@ def solution(dimensions, your_position, trainer_position, distance):
 
     https://mathworld.wolfram.com/Billiards.html
 
-    also, solutions seems to be reflexive, finding 1 finds 4.
+    http://pi.math.cornell.edu/~mec/Summer2009/Remus/lesson1.html
+
+    https://www.khanacademy.org/math/geometry/hs-geo-similarity/hs-geo-similar-and-congruent-triangles-modeling/v/triangle-similarity-in-pool
+
+    The distance of the ball from the rail being targeted
+    to the target ball creates similiar triangles
+    if they are equidistant from the rails then the triangles are congruent
+
+    I believe the net result is that each carom produces a new either
+    similiar or congruent triangle of which we need to calculate the one side
+    of to see if it violates the distance constraint. Then we need to find
+    the carom counting pattern. i.e. 1 carom not on the same x or y produces
+    4 possible solutions (2 pairs of symmetric solutions), 
+    whereas equal y or x limits it to two.
     """
+    def dist(p_1, p_2):
+        return ((p_2[0] - p_1[0])**2 + (p_2[1] - p_1[1])**2)**0.5
+    
+    if dist(your_position, trainer_position) <= distance:
+        i = 1
+    else:
+        i = 0
 
     # find max bounces
-    closest_wall = min(your_position)
     
 
-    return 0 
-
+    return i
 
