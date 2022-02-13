@@ -15,7 +15,8 @@ def solution(dimensions, your_position, trainer_position, distance):
     http://pi.math.cornell.edu/~mec/Summer2009/Remus/lesson1.html
 
     https://www.khanacademy.org/math/geometry/hs-geo-similarity/hs-geo-similar-and-congruent-triangles-modeling/v/triangle-similarity-in-pool
-
+    https://en.wikipedia.org/wiki/Carom_billiards
+    https://undergroundmathematics.org/thinking-about-geometry/r8022/solution
     The distance of the ball from the rail being targeted
     to the target ball creates similiar triangles
     if they are equidistant from the rails then the triangles are congruent
@@ -26,6 +27,9 @@ def solution(dimensions, your_position, trainer_position, distance):
     the carom counting pattern. i.e. 1 carom not on the same x or y produces
     4 possible solutions (2 pairs of symmetric solutions), 
     whereas equal y or x limits it to two.
+
+    Other rules, odd numbers of caroms produce "Vs" and even numbers
+    of caroms produce polygons.
     """
     def dist(p_1, p_2):
         return ((p_2[0] - p_1[0])**2 + (p_2[1] - p_1[1])**2)**0.5
@@ -35,7 +39,10 @@ def solution(dimensions, your_position, trainer_position, distance):
     else:
         i = 0
 
-    # find max bounces
+    if your_position[0] == trainer_position[0] or your_position[1] == trainer_position[1]:
+        # we construct a system of equations that follow the form
+        # x/your_position[0] = (your_position[1] - x)/(train_position[0] - y)
+        # (x/your_position[0]) = (trainer_position[])
     
 
     return i
