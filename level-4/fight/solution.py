@@ -19,6 +19,7 @@ def solution(dimensions, your_position, trainer_position, distance):
     
     https://undergroundmathematics.org/thinking-about-geometry/r8022/solution
     Method 1 from this link creates a helpful visual. 
+    https://blogs.scientificamerican.com/roots-of-unity/how-to-unfold-a-pool-table/
     https://plus.maths.org/content/arithmetic-billiards-0
     Combined with this I think there is a concept that can be applied, "unfolding the billiards table"
     with each "fold" (reflection of the table off a given wall) we replace our opponent in space
