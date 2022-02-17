@@ -80,6 +80,8 @@ def solution(dimensions, your_position, trainer_position, distance):
     e_dist(your_position, e_fold(*s_fold(your_position, trainer_position, walls))[1])
     e_dist(your_position, w_fold(*s_fold(your_position, trainer_position, walls))[1])
 
+    e_dist(your_position, n_fold(*w_fold(*s_fold(your_position, trainer_position, walls)))[1])
+
     return i
 
 # test case
