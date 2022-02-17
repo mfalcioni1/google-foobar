@@ -28,33 +28,57 @@ def solution(dimensions, your_position, trainer_position, distance):
 
     This works. I do have to figure out a way to check that you don't hit yourself.
     """
-    def dist(p_1, p_2):
+    def e_dist(p_1, p_2):
         return ((p_2[0] - p_1[0])**2 + (p_2[1] - p_1[1])**2)**0.5
     
-    if dist(your_position, trainer_position) <= distance:
+    def l_dist(p_1, p_2):
+        return p_1 - p_2
+    
+    def slope_check(your_position, n_tp, n_yp):
+        s_tp = (your_position[1] - n_yp[1])/(your_position[0] - n_yp[0])
+        s_yp = (your_position[1] - n_yp[1])/(your_position[0] - n_yp[0])
+        if s_tp == s_tp:
+            return 0
+        else:
+            return 1
+    
+    def s_fold(yp, tp, walls):
+        n_yp = [yp[0], yp[1] - 2*l_dist(yp[1], walls['s'])]
+        n_tp = [tp[0], tp[1] - 2*l_dist(tp[1], walls['s'])]
+        n_walls = {'n': walls['s'], 's': walls['s'] - dimensions[1], 'e': walls['e'], 'w': walls['w']}
+        return n_yp, n_tp, n_walls
+    
+    def n_fold(yp, tp, walls):
+        n_yp = [yp[0], yp[1] + 2*l_dist(yp[1], walls['n'])]
+        n_tp = [tp[0], tp[1] + 2*l_dist(tp[1], walls['n'])]
+        n_walls = {'n': walls['n'] + dimensions[1], 's': walls['n'], 'e': walls['e'], 'w': walls['w']}
+        return n_yp, n_tp, n_walls
+    
+    def e_fold(yp, tp, walls):
+        n_tp = [tp[0] + 2*l_dist(tp[0], walls['e']), tp[1]]
+        n_yp = [yp[0] + 2*l_dist(yp[0], walls['e']), yp[1]]
+        n_walls = {'n': walls['n'], 's': walls['s'], 'e': walls['e'] + dimensions[0], 'w': walls['e']}
+        return n_yp, n_tp, n_walls
+    
+    def w_fold(yp, tp, walls):
+        n_tp = [tp[0] - 2*l_dist(tp[0], walls['w']), tp[1]]
+        n_yp = [yp[0] - 2*l_dist(yp[0], walls['w']), yp[1]]
+        n_walls = {'n': walls['n'], 's': walls['s'], 'e': walls['w'], 'w': walls['w'] - dimensions[0]}
+        return n_yp, n_tp, n_walls
+    
+    if e_dist(your_position, trainer_position) <= distance:
         i = 1
     else:
         i = 0
     
-    e_wall = [dimensions[0], trainer_position[1]]
-    w_wall = [0, trainer_position[1]]
-    n_wall = [trainer_position[0], dimensions[1]]
-    s_wall = [trainer_position[0], 0]
+    walls = {'n': dimensions[1], 's': 0, 'e': dimensions[0], 'w': 0}
 
-    def s_fold(yp, tp, e_wall, w_wall, n_wall, s_wall):
-        return [tp[0], tp[1] - 2*dist(tp, s_wall)]
-    
-    def n_fold(tp):
-        return [tp[0], tp[1] + 2*dist(tp, n_wall)]
-    
-    def e_fold(tp):
-        return [tp[0] + 2*dist(tp, e_wall), tp[1]]
-    
-    def w_fold(tp):
-        return [tp[0] - 2*dist(tp, w_wall), tp[1]]
-    
-
-    dist(your_position, n_fold(trainer_position))
+    e_dist(your_position, s_fold(*w_fold(your_position, trainer_position, walls))[1])
+    e_dist(your_position, n_fold(*w_fold(your_position, trainer_position, walls))[1])
+    e_dist(your_position, s_fold(*e_fold(your_position, trainer_position, walls))[1])
+    e_dist(your_position, n_fold(*e_fold(your_position, trainer_position, walls))[1])
+    e_dist(your_position, e_fold(*s_fold(your_position, trainer_position, walls))[1])
+    e_dist(your_position, w_fold(*s_fold(your_position, trainer_position, walls))[1])
 
     return i
 
