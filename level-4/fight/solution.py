@@ -36,9 +36,9 @@ def solution(dimensions, your_position, trainer_position, distance):
         return p_1 - p_2
     
     def slope_check(your_position, n_tp, n_yp):
-        s_tp = (your_position[1] - n_yp[1])/(your_position[0] - n_yp[0])
+        s_tp = (your_position[1] - n_tp[1])/(your_position[0] - n_tp[0])
         s_yp = (your_position[1] - n_yp[1])/(your_position[0] - n_yp[0])
-        if s_tp == s_tp:
+        if s_tp == s_yp:
             return 0
         else:
             return 1
