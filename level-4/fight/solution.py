@@ -27,6 +27,7 @@ def solution(dimensions, your_position, trainer_position, distance):
     if it is < distance constraint then it is a viable solution.
 
     This works. I do have to figure out a way to check that you don't hit yourself.
+    Slope is the answer to how you check if you risk bouncing into yourself.
     """
     def e_dist(p_1, p_2):
         return ((p_2[0] - p_1[0])**2 + (p_2[1] - p_1[1])**2)**0.5
