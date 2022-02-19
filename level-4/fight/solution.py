@@ -1,3 +1,5 @@
+import itertools
+
 def solution(dimensions, your_position, trainer_position, distance):
     """
     Figure out the max number of bounces a shot can take given distance
@@ -38,6 +40,7 @@ def solution(dimensions, your_position, trainer_position, distance):
     So they are combinations, but also you can't select the opposite of the
     previous option. i.e. n -> s is not viable.
     """
+
     def e_dist(p_1, p_2):
         return ((p_2[0] - p_1[0])**2 + (p_2[1] - p_1[1])**2)**0.5
     
@@ -104,18 +107,30 @@ def solution(dimensions, your_position, trainer_position, distance):
         i = 1
     else:
         i = 0
-    
-    walls = {'n': dimensions[1], 's': 0, 'e': dimensions[0], 'w': 0}
-    folder(your_position, trainer_position, walls, path = ['n'])
-    e_dist(your_position, folder(your_position, trainer_position, walls, path = ['n', 'n', 'n'])[1])
-    # 187.29922583929704
-    eval(your_position, folder(your_position, trainer_position, walls, path = ['e', 'e']), distance)
 
+    walls = {'n': dimensions[1], 's': 0, 'e': dimensions[0], 'w': 0}
+    sols = []
+    folding = True
+    carom = 1
+    while folding:
+        folding = False
+        for p in itertools.combinations_with_replacement('nsew', carom):
+            fold = folder(your_position, trainer_position, walls, path = p)
+            if eval(your_position, fold, distance) == 1:
+                sols.append(fold[1])
+                folding = True
+        carom += 1
+    
+    #folder(your_position, trainer_position, walls, path = ['n'])
+    #e_dist(your_position, folder(your_position, trainer_position, walls, path = ['n', 'n', 'n'])[1])
+    # 187.29922583929704
+    #eval(your_position, folder(your_position, trainer_position, walls, path = ['e', 'e']), distance)
+    i += len(sols)
     return i
 
 # test case
 dimensions, your_position, trainer_position, distance = [3, 2], [1, 1], [2, 1], 4
-
-
+solution([3, 2], [1, 1], [2, 1], 4)
+solution([300,275], [150,150], [185,100], 500)
 
 dimensions, your_position, trainer_position, distance = [300,275], [150,150], [185,100], 500
