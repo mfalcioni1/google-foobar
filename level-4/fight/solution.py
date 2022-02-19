@@ -45,17 +45,17 @@ def solution(dimensions, your_position, trainer_position, distance):
         return ((p_2[0] - p_1[0])**2 + (p_2[1] - p_1[1])**2)**0.5
     
     def l_dist(p_1, p_2):
-        return p_1 - p_2
+        return abs(p_1 - p_2)
     
     def slope_check(your_position, n_yp, n_tp):
-        if (your_position[0] - n_tp[0]) == 0:
+        if (n_tp[0] - your_position[0]) == 0:
             s_tp = None
         else: 
-            s_tp = (your_position[1] - n_tp[1])/(your_position[0] - n_tp[0])
-        if (your_position[0] - n_yp[0]) == 0:
+            s_tp = float(n_tp[1] - your_position[1])/(n_tp[0] - your_position[0])
+        if (n_yp[0] - your_position[0]) == 0:
             s_yp = None
         else:
-            s_yp = (your_position[1] - n_yp[1])/(your_position[0] - n_yp[0])
+            s_yp = float(n_yp[1] - your_position[1])/(n_yp[0] - your_position[0])
         if s_tp == s_yp:
             return 0
         else:
@@ -102,35 +102,34 @@ def solution(dimensions, your_position, trainer_position, distance):
             return 1
         else:
             return 0
-    
+
+    sols = []
     if e_dist(your_position, trainer_position) <= distance:
-        i = 1
+        sols.append(trainer_position)
     else:
-        i = 0
+        return 0
 
     walls = {'n': dimensions[1], 's': 0, 'e': dimensions[0], 'w': 0}
-    sols = []
     folding = True
     carom = 1
+    n_sols = 0
     while folding:
         folding = False
         for p in itertools.combinations_with_replacement('nsew', carom):
             fold = folder(your_position, trainer_position, walls, path = p)
             if eval(your_position, fold, distance) == 1:
                 sols.append(fold[1])
-                folding = True
-        carom += 1
-    
-    #folder(your_position, trainer_position, walls, path = ['n'])
-    #e_dist(your_position, folder(your_position, trainer_position, walls, path = ['n', 'n', 'n'])[1])
-    # 187.29922583929704
-    #eval(your_position, folder(your_position, trainer_position, walls, path = ['e', 'e']), distance)
-    i += len(sols)
-    return i
+        sols = [list(x) for x in set(tuple(x) for x in sols)]
+        if n_sols < len(sols):
+            n_sols = len(sols)
+            folding = True
+            carom += 1
+
+    return n_sols
 
 # test case
-dimensions, your_position, trainer_position, distance = [3, 2], [1, 1], [2, 1], 4
+# dimensions, your_position, trainer_position, distance = [3, 2], [1, 1], [2, 1], 4
+# dimensions, your_position, trainer_position, distance = [300,275], [150,150], [185,100], 500
 solution([3, 2], [1, 1], [2, 1], 4)
 solution([300,275], [150,150], [185,100], 500)
 
-dimensions, your_position, trainer_position, distance = [300,275], [150,150], [185,100], 500
