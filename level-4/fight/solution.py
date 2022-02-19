@@ -47,13 +47,14 @@ def solution(dimensions, your_position, trainer_position, distance):
     def l_dist(p_1, p_2):
         return abs(p_1 - p_2)
     
+    def slope(p_1, p_2):
+        if (p_2[0] - p_1[0]) == 0:
+            s = None
+        else:
+            s = float(p_2[1] - p_1[1])/float(p_2[0] - p_1[0])
+        return s
+
     def slope_check(your_position, n_yp, n_tp, dimensions):
-        def slope(p_1, p_2):
-            if (p_2[0] - p_1[0]) == 0:
-                s = None
-            else:
-                s = float(p_2[1] - p_1[1])/float(p_2[0] - p_1[0])
-            return s
         s_tp = slope(your_position, n_tp)
         s_yp = slope(your_position, n_yp)
         if n_tp[0] > 0 and n_tp[1] > 0:
@@ -113,7 +114,7 @@ def solution(dimensions, your_position, trainer_position, distance):
 
     sols = []
     if e_dist(your_position, trainer_position) <= distance:
-        sols.append(trainer_position)
+        sols.append(slope(your_position, trainer_position))
     else:
         return 0
 
@@ -126,8 +127,8 @@ def solution(dimensions, your_position, trainer_position, distance):
         for p in itertools.combinations_with_replacement('nsew', carom):
             fold = folder(your_position, trainer_position, walls, path = p)
             if eval(your_position, fold, distance) == 1:
-                sols.append(fold[1])
-        sols = [list(x) for x in set(tuple(x) for x in sols)]
+                if slope(your_position, fold[1]) not in sols:
+                    sols.append(slope(your_position, fold[1]))
         if n_sols < len(sols):
             n_sols = len(sols)
             folding = True
