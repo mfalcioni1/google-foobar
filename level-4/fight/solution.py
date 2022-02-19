@@ -35,9 +35,15 @@ def solution(dimensions, your_position, trainer_position, distance):
     def l_dist(p_1, p_2):
         return p_1 - p_2
     
-    def slope_check(your_position, n_tp, n_yp):
-        s_tp = (your_position[1] - n_tp[1])/(your_position[0] - n_tp[0])
-        s_yp = (your_position[1] - n_yp[1])/(your_position[0] - n_yp[0])
+    def slope_check(your_position, n_yp, n_tp):
+        if (your_position[0] - n_tp[0]) == 0:
+            s_tp = None
+        else: 
+            s_tp = (your_position[1] - n_tp[1])/(your_position[0] - n_tp[0])
+        if (your_position[0] - n_yp[0]) == 0:
+            s_yp = None
+        else:
+            s_yp = (your_position[1] - n_yp[1])/(your_position[0] - n_yp[0])
         if s_tp == s_yp:
             return 0
         else:
@@ -66,6 +72,24 @@ def solution(dimensions, your_position, trainer_position, distance):
         n_yp = [yp[0] - 2*l_dist(yp[0], walls['w']), yp[1]]
         n_walls = {'n': walls['n'], 's': walls['s'], 'e': walls['w'], 'w': walls['w'] - dimensions[0]}
         return n_yp, n_tp, n_walls
+
+    folds = {
+        'n': n_fold,
+        's': s_fold,
+        'e': e_fold,
+        'w': w_fold
+    }
+
+    def folder(yp, tp, walls, path):
+        for p in path:
+            yp, tp, walls = folds[p](yp, tp, walls)
+        return yp, tp, walls
+
+    def eval(yp, fo, distance):
+        if (slope_check(yp, fo[0], fo[1]) == 1) & (e_dist(yp, fo[1]) <= distance):
+            return 1
+        else:
+            return 0
     
     if e_dist(your_position, trainer_position) <= distance:
         i = 1
@@ -73,15 +97,10 @@ def solution(dimensions, your_position, trainer_position, distance):
         i = 0
     
     walls = {'n': dimensions[1], 's': 0, 'e': dimensions[0], 'w': 0}
-
-    e_dist(your_position, s_fold(*w_fold(your_position, trainer_position, walls))[1])
-    e_dist(your_position, n_fold(*w_fold(your_position, trainer_position, walls))[1])
-    e_dist(your_position, s_fold(*e_fold(your_position, trainer_position, walls))[1])
-    e_dist(your_position, n_fold(*e_fold(your_position, trainer_position, walls))[1])
-    e_dist(your_position, e_fold(*s_fold(your_position, trainer_position, walls))[1])
-    e_dist(your_position, w_fold(*s_fold(your_position, trainer_position, walls))[1])
-
-    e_dist(your_position, n_fold(*w_fold(*s_fold(your_position, trainer_position, walls)))[1])
+    folder(your_position, trainer_position, walls, path = ['n'])
+    e_dist(your_position, folder(your_position, trainer_position, walls, path = ['n', 'n', 'n'])[1])
+    # 187.29922583929704
+    #eval(your_position, fo, distance)
 
     return i
 
@@ -90,3 +109,5 @@ dimensions = [3, 2]
 your_position = [1, 1]
 trainer_position = [2, 1]
 distance = 4
+
+dimensions, your_position, trainer_position, distance = [300,275], [150,150], [185,100], 500
