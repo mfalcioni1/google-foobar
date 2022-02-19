@@ -47,16 +47,24 @@ def solution(dimensions, your_position, trainer_position, distance):
     def l_dist(p_1, p_2):
         return abs(p_1 - p_2)
     
-    def slope_check(your_position, n_yp, n_tp):
-        if (n_tp[0] - your_position[0]) == 0:
-            s_tp = None
-        else: 
-            s_tp = float(n_tp[1] - your_position[1])/(n_tp[0] - your_position[0])
-        if (n_yp[0] - your_position[0]) == 0:
-            s_yp = None
-        else:
-            s_yp = float(n_yp[1] - your_position[1])/(n_yp[0] - your_position[0])
-        if s_tp == s_yp:
+    def slope_check(your_position, n_yp, n_tp, dimensions):
+        def slope(p_1, p_2):
+            if (p_2[0] - p_1[0]) == 0:
+                s = None
+            else:
+                s = float(p_2[1] - p_1[1])/float(p_2[0] - p_1[0])
+            return s
+        s_tp = slope(your_position, n_tp)
+        s_yp = slope(your_position, n_yp)
+        if n_tp[0] > 0 and n_tp[1] > 0:
+            s_corner = slope(your_position, [dimensions[0], dimensions[1]])
+        elif n_tp[0] < 0 and n_tp[1] > 0:
+            s_corner = slope(your_position, [0, dimensions[1]])
+        elif n_tp[0] <= 0 and n_tp[1] <= 0:
+            s_corner = slope(your_position, [0, 0])
+        elif n_tp[0] > 0 and n_tp[1] < 0:
+            s_corner = slope(your_position, [dimensions[0], 0])
+        if s_tp == s_yp or s_corner == s_tp:
             return 0
         else:
             return 1
@@ -98,7 +106,7 @@ def solution(dimensions, your_position, trainer_position, distance):
         return yp, tp, walls
 
     def eval(yp, fo, distance):
-        if (slope_check(yp, fo[0], fo[1]) == 1) & (e_dist(yp, fo[1]) <= distance):
+        if (slope_check(yp, fo[0], fo[1], dimensions) == 1) and (e_dist(yp, fo[1]) <= distance):
             return 1
         else:
             return 0
@@ -130,6 +138,18 @@ def solution(dimensions, your_position, trainer_position, distance):
 # test case
 # dimensions, your_position, trainer_position, distance = [3, 2], [1, 1], [2, 1], 4
 # dimensions, your_position, trainer_position, distance = [300,275], [150,150], [185,100], 500
+dimensions, your_position, trainer_position, distance = [2, 5], [1, 2], [1, 4], 6
 solution([3, 2], [1, 1], [2, 1], 4)
 solution([300,275], [150,150], [185,100], 500)
 
+solution([2, 5], [1, 2], [1, 4], 11) # 27
+solution([2, 5], [1, 2], [1, 4], 6) # 7
+solution([23, 10], [6, 4], [3, 2], 23) # 8
+
+#[[-3, 6]wwn, [5, 4]ee, [5, 6]een, [3, 6]en, [-1, 4]w, [-3, 4]ww, [3, 4]e, [-1, 6]wn]
+p = ['w', 'w']
+fold = folder(your_position, trainer_position, walls, path = p)
+fold
+eval(your_position, fold, distance)
+slope_check(your_position, fold[0], fold[1], dimensions)
+e_dist(your_position, fold[1]) <= distance
