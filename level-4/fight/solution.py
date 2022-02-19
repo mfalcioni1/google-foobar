@@ -28,6 +28,15 @@ def solution(dimensions, your_position, trainer_position, distance):
 
     This works. I do have to figure out a way to check that you don't hit yourself.
     Slope is the answer to how you check if you risk bouncing into yourself.
+
+    Working through understanding possible solutions.
+    Each additional carom adds 4 + (n) solutions, where n is the previous
+    number of caroms number of solutions, i.e. 1 carom=4, 2 carom=8
+    if we can create all the possible direction profiles for a given
+    number of caroms we can call our couple functions as we loop through
+    them to get the answer. Main issue is that n -> e is the same as e -> n.
+    So they are combinations, but also you can't select the opposite of the
+    previous option. i.e. n -> s is not viable.
     """
     def e_dist(p_1, p_2):
         return ((p_2[0] - p_1[0])**2 + (p_2[1] - p_1[1])**2)**0.5
@@ -100,14 +109,13 @@ def solution(dimensions, your_position, trainer_position, distance):
     folder(your_position, trainer_position, walls, path = ['n'])
     e_dist(your_position, folder(your_position, trainer_position, walls, path = ['n', 'n', 'n'])[1])
     # 187.29922583929704
-    #eval(your_position, fo, distance)
+    eval(your_position, folder(your_position, trainer_position, walls, path = ['e', 'e']), distance)
 
     return i
 
 # test case
-dimensions = [3, 2]
-your_position = [1, 1]
-trainer_position = [2, 1]
-distance = 4
+dimensions, your_position, trainer_position, distance = [3, 2], [1, 1], [2, 1], 4
+
+
 
 dimensions, your_position, trainer_position, distance = [300,275], [150,150], [185,100], 500
