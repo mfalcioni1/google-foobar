@@ -1,4 +1,5 @@
 import itertools
+from math import atan2
 
 def solution(dimensions, your_position, trainer_position, distance):
     """
@@ -39,6 +40,13 @@ def solution(dimensions, your_position, trainer_position, distance):
     them to get the answer. Main issue is that n -> e is the same as e -> n.
     So they are combinations, but also you can't select the opposite of the
     previous option. i.e. n -> s is not viable.
+
+    One additional fix, tracking slope makes things slightly easier
+    than tracking bearings, however slopes can be duplicated.
+    We will track angle trajectories instead.
+    
+    Pretty sure the solution is correct, and is just computationally
+    inefficient.
     """
 
     def e_dist(p_1, p_2):
@@ -114,7 +122,7 @@ def solution(dimensions, your_position, trainer_position, distance):
 
     sols = []
     if e_dist(your_position, trainer_position) <= distance:
-        sols.append(slope(your_position, trainer_position))
+        sols.append(atan2(trainer_position[1] - your_position[1], trainer_position[0] - your_position[0]))
     else:
         return 0
 
@@ -124,11 +132,14 @@ def solution(dimensions, your_position, trainer_position, distance):
     n_sols = 0
     while folding:
         folding = False
+        # this part is way too niave. I am creating alot of sequences
+        # that are duplicates of previous i.e. [n,s,s] = [s]
         for p in itertools.combinations_with_replacement('nsew', carom):
             fold = folder(your_position, trainer_position, walls, path = p)
             if eval(your_position, fold, distance) == 1:
-                if slope(your_position, fold[1]) not in sols:
-                    sols.append(slope(your_position, fold[1]))
+                angle = atan2(fold[1][1] - your_position[1], fold[1][0] - your_position[0])
+                if angle not in sols:
+                    sols.append(angle)
         if n_sols < len(sols):
             n_sols = len(sols)
             folding = True
@@ -136,21 +147,22 @@ def solution(dimensions, your_position, trainer_position, distance):
 
     return n_sols
 
+
 # test case
 # dimensions, your_position, trainer_position, distance = [3, 2], [1, 1], [2, 1], 4
 # dimensions, your_position, trainer_position, distance = [300,275], [150,150], [185,100], 500
-dimensions, your_position, trainer_position, distance = [2, 5], [1, 2], [1, 4], 6
+# dimensions, your_position, trainer_position, distance = [2, 5], [1, 2], [1, 4], 11
 solution([3, 2], [1, 1], [2, 1], 4)
 solution([300,275], [150,150], [185,100], 500)
 
-solution([2, 5], [1, 2], [1, 4], 11) # 27
+solution([2, 5], [1, 2], [1, 4], 11) # 27z
 solution([2, 5], [1, 2], [1, 4], 6) # 7
 solution([23, 10], [6, 4], [3, 2], 23) # 8
 
 #[[-3, 6]wwn, [5, 4]ee, [5, 6]een, [3, 6]en, [-1, 4]w, [-3, 4]ww, [3, 4]e, [-1, 6]wn]
-p = ['w', 'w']
-fold = folder(your_position, trainer_position, walls, path = p)
-fold
-eval(your_position, fold, distance)
-slope_check(your_position, fold[0], fold[1], dimensions)
-e_dist(your_position, fold[1]) <= distance
+# p = ['w', 's']
+# fold = folder(your_position, trainer_position, walls, path = p)
+# fold
+# eval(your_position, fold, distance)
+# slope_check(your_position, fold[0], fold[1], dimensions)
+# e_dist(your_position, fold[1]) <= distance
