@@ -148,6 +148,7 @@ def solution(dimensions, your_position, trainer_position, distance):
     return n_sols
 
 
+
 # test case
 # dimensions, your_position, trainer_position, distance = [3, 2], [1, 1], [2, 1], 4
 # dimensions, your_position, trainer_position, distance = [300,275], [150,150], [185,100], 500
